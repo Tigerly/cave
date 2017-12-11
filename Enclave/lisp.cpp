@@ -10,9 +10,12 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cstring>
+#include <cassert>
 #include <vector>
 #include <list>
 #include <map>
+#include <exception>
 
 // return given mumber as a string
 std::string str(long n) { std::ostringstream os; os << n; return os.str(); }
@@ -117,6 +120,7 @@ cell proc_div(const cells & c)
     return cell(Number, str(n));
 }
 
+// FIXME
 cell proc_rem(const cells & c)
 {
 	long n(atol(c[0].val.c_str()));
@@ -348,16 +352,43 @@ void repl(const std::string & prompt, environment * env)
     }
 }
 
+environment global_env;
+std::string output_buffer;
+char safe_buffer[128];	
 
-int main ()
+void setup(void)
 {
-    environment global_env; add_globals(global_env);
-    //repl("90> ", &global_env);
-	std::ifstream student_library("lib.txt");
+	add_globals(global_env);
+}
+
+void load_library(const char* filename)
+{
+	std::ifstream student_library(filename);
 	std::string line;
 	while (std::getline(student_library, line))
 	{
-		std::cout << to_string(eval(read(line), &global_env)) << std::endl;	
+		output_buffer = to_string(eval(read(line), &global_env));
 	}
+}
+
+void process_line(const char* input)
+{
+	std::string line(input);
+	output_buffer = to_string(eval(read(line), &global_env));
+}
+
+char* retrieve_output(void)
+{
+	strncpy(safe_buffer, output_buffer.c_str(), 127);
+	safe_buffer[127] = '\0';
+	return safe_buffer;
+}
+
+/*
+int main ()
+{
+	setup();
+	load_library("lib.txt");
 	repl("90> ", &global_env);
 }
+*/
