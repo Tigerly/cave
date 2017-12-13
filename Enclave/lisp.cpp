@@ -16,7 +16,7 @@
 #include <map>
 
 // return given mumber as a string
-std::string str(long n) { std::ostringstream os; os << n; return os.str(); }
+std::string str(long n) { std::to_string(n); }
 
 // return true iff given character is '0'..'9'
 bool isdig(char c) { return isdigit(static_cast<unsigned char>(c)) != 0; }
@@ -382,9 +382,7 @@ void process_line(const char* input)
 
 void retrieve_output(char* buf, size_t len)
 {
-	for (int i = 0; i < 127 && i < len; i++) {
-		buf[i] = output_buffer[i];
-	}
+	output_buffer.copy(buf, len);
 }
 
 /*

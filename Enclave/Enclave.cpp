@@ -53,10 +53,20 @@ void printf(const char *fmt, ...)
 }
 */
 
+void test(char* output, size_t len)
+{
+	char buf[128];
+	setup();
+	process_line("(+ 1 2)");
+	retrieve_output(buf, 128);
+	for (int i = 0; i < 128 && i < len; i++)
+		output[i] = buf[i];
+}
+
 
 void send_student_code(const char* input)
 {
-
+	
 }
 
 void retrieve_results(char* output, size_t len)
