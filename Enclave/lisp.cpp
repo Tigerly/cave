@@ -6,16 +6,14 @@
 // This code is known to have faults. E.g. it leaks memory. Use at your own risk.
 
 #include <cstdlib>
-#include <iostream>
-#include <fstream>
+//#include <iostream>
+//#include <fstream>
 #include <sstream>
 #include <string>
 #include <cstring>
-#include <cassert>
 #include <vector>
 #include <list>
 #include <map>
-#include <exception>
 
 // return given mumber as a string
 std::string str(long n) { std::ostringstream os; os << n; return os.str(); }
@@ -74,8 +72,9 @@ struct environment {
             return env_; // the symbol exists in this environment
         if (outer_)
             return outer_->find(var); // attempt to find the symbol in some "outer" env
-        std::cout << "unbound symbol '" << var << "'\n";
-        exit(1);
+        //std::cout << "unbound symbol '" << var << "'\n";
+        //exit(1);
+		// TODO error handling
     }
 
     // return a reference to the cell associated with the given symbol 'var'
@@ -265,8 +264,9 @@ cell eval(cell x, environment * env)
     else if (proc.type == Proc)
         return proc.proc(exps);
 
-    std::cout << "not a function\n";
-    exit(1);
+    //std::cout << "not a function\n";
+    //exit(1);
+	// TODO error handling
 }
 
 
@@ -343,6 +343,7 @@ std::string to_string(const cell & exp)
 }
 
 // the default read-eval-print-loop
+/*
 void repl(const std::string & prompt, environment * env)
 {
     for (;;) {
@@ -351,16 +352,17 @@ void repl(const std::string & prompt, environment * env)
         std::cout << to_string(eval(read(line), env)) << '\n';
     }
 }
+*/
 
 environment global_env;
 std::string output_buffer;
-char safe_buffer[128];	
 
 void setup(void)
 {
 	add_globals(global_env);
 }
 
+/*
 void load_library(const char* filename)
 {
 	std::ifstream student_library(filename);
@@ -370,6 +372,7 @@ void load_library(const char* filename)
 		output_buffer = to_string(eval(read(line), &global_env));
 	}
 }
+*/
 
 void process_line(const char* input)
 {
@@ -377,11 +380,11 @@ void process_line(const char* input)
 	output_buffer = to_string(eval(read(line), &global_env));
 }
 
-char* retrieve_output(void)
+void retrieve_output(char* buf, size_t len)
 {
-	strncpy(safe_buffer, output_buffer.c_str(), 127);
-	safe_buffer[127] = '\0';
-	return safe_buffer;
+	for (int i = 0; i < 127 && i < len; i++) {
+		buf[i] = output_buffer[i];
+	}
 }
 
 /*
