@@ -5,6 +5,8 @@
 // This is free and unencumbered public domain software, see http://unlicense.org/
 // This code is known to have faults. E.g. it leaks memory. Use at your own risk.
 
+#include "Enclave.h"
+#include "Enclave_t.h"
 #include <cstdlib>
 //#include <iostream>
 //#include <fstream>
@@ -378,6 +380,7 @@ void process_line(const char* input)
 {
 	std::string line(input);
 	output_buffer = to_string(eval(read(line), &global_env));
+	printf("%s\n", output_buffer.c_str());
 }
 
 void retrieve_output(char* buf, size_t len)

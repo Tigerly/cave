@@ -41,7 +41,6 @@
  * printf: 
  *   Invokes OCALL to display the enclave buffer to the terminal.
  */
-/*
 void printf(const char *fmt, ...)
 {
     char buf[BUFSIZ] = {'\0'};
@@ -51,10 +50,10 @@ void printf(const char *fmt, ...)
     va_end(ap);
     ocall_print_string(buf);
 }
-*/
 
 void test(char* output, size_t len)
 {
+	printf("test\n");
 	char buf[128];
 	setup();
 	process_line("(+ 1 2)");
