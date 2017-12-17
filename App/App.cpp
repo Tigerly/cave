@@ -232,9 +232,7 @@ int SGX_CDECL main(int argc, char *argv[])
         return -1; 
     }
 
-	char buf[128];
-	test(global_eid, buf, 128);
-	printf("%s\n", buf);
+	test(global_eid);
  
     /* Destroy the enclave */
     sgx_destroy_enclave(global_eid);

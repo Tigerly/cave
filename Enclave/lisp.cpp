@@ -18,7 +18,7 @@
 #include <map>
 
 // return given mumber as a string
-std::string str(long n) { std::to_string(n); }
+std::string str(long n) { return std::to_string(n); }
 
 // return true iff given character is '0'..'9'
 bool isdig(char c) { return isdigit(static_cast<unsigned char>(c)) != 0; }
@@ -361,7 +361,7 @@ std::string output_buffer;
 
 void setup(void)
 {
-	add_globals(global_env);
+	//add_globals(global_env);
 }
 
 /*
@@ -378,9 +378,11 @@ void load_library(const char* filename)
 
 void process_line(const char* input)
 {
-	std::string line(input);
-	output_buffer = to_string(eval(read(line), &global_env));
-	printf("%s\n", output_buffer.c_str());
+	printf("lisp\n");
+	add_globals(global_env);
+	//std::string line(input);
+	std::string test = to_string(eval(read(std::string("(+ 3 3)")), &global_env));
+	printf("%s\n", test.c_str());
 }
 
 void retrieve_output(char* buf, size_t len)
