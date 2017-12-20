@@ -55,7 +55,9 @@ void test(void)
 {
 	printf("test\n");
 	setup();
-	process_line("(+ 1 2)");
+	process_line("(define a 3)");
+	process_line("(+ a 2)");
+	retrieve_output(nullptr, 0);
 }
 
 
