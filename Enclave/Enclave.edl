@@ -35,7 +35,7 @@ enclave {
 	trusted {
 		/* ECALL */
 		public void send_student_code([in, string]const char* input);
-		public void retrieve_results([out, size=len]char* output, size_t len);
+		public void print_results(void);
 		public void test(void);
 	};
 

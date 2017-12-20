@@ -357,7 +357,6 @@ void repl(const std::string & prompt, environment * env)
 */
 
 environment global_env;
-std::string output_buffer;
 
 void setup(void)
 {
@@ -376,16 +375,10 @@ void load_library(const char* filename)
 }
 */
 
-void process_line(const char* input)
+std::string process_line(const char* input)
 {
 	std::string line(input);
-	output_buffer = to_string(eval(read(line), &global_env));
-}
-
-void retrieve_output(char* buf, size_t len)
-{
-	//output_buffer.copy(buf, len);
-	printf("%s\n", output_buffer.c_str());
+	return to_string(eval(read(line), &global_env));
 }
 
 /*

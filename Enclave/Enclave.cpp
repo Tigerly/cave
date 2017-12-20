@@ -37,6 +37,9 @@
 #include "Enclave_t.h"  /* print_string */
 #include "lisp.hpp"
 
+static bool initialized = false;
+std::string output_buffer;
+
 /* 
  * printf: 
  *   Invokes OCALL to display the enclave buffer to the terminal.
@@ -56,17 +59,29 @@ void test(void)
 	printf("test\n");
 	setup();
 	process_line("(define a 3)");
-	process_line("(+ a 2)");
-	retrieve_output(nullptr, 0);
+	std::string output = process_line("(+ a 2)");
+	printf("test output: %s\n", output.c_str());
 }
 
 
 void send_student_code(const char* input)
 {
-	
+	if (!initialized) {
+		setup();
+		initialized = true;
+	}
+
+	output_buffer = process_line(input);
 }
 
-void retrieve_results(char* output, size_t len)
+void print_results(void)
 {
+	std::string test_result = process_line("(fact 5)");
 
+	if (test_result == std::to_string(120))
+		printf("fact correct\n");
+	else
+		printf("fact incorrect\n");
+
+	//printf("output: %s\n", output_buffer.c_str());
 }

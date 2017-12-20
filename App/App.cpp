@@ -42,6 +42,9 @@
 #include "App.h"
 #include "Enclave_u.h"
 
+#include <string>
+#include <fstream>
+
 /* Global EID shared by multiple threads */
 sgx_enclave_id_t global_eid = 0;
 
@@ -232,7 +235,16 @@ int SGX_CDECL main(int argc, char *argv[])
         return -1; 
     }
 
-	test(global_eid);
+	auto filename = "student.txt";
+
+	std::ifstream student_library(filename);
+	std::string line;
+	while (std::getline(student_library, line))
+	{
+		send_student_code(global_eid, line.c_str());
+	}
+
+	print_results(global_eid);
  
     /* Destroy the enclave */
     sgx_destroy_enclave(global_eid);
