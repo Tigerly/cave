@@ -37,6 +37,9 @@
 #include "Enclave_t.h"  /* print_string */
 #include "lisp.hpp"
 
+#include <vector>
+#include "testcases.h"
+
 static bool initialized = false;
 std::string output_buffer;
 
@@ -76,12 +79,15 @@ void send_student_code(const char* input)
 
 void print_results(void)
 {
-	std::string test_result = process_line("(fact 5)");
+	for (const auto& test : fact_tests) {
+		auto res = process_line(test.line);
+		if (0 != strncmp(res.c_str(), test.result, 32)) {
+			printf("fact incorrect\n");
+			return;
+		}
+	}
 
-	if (test_result == std::to_string(120))
-		printf("fact correct\n");
-	else
-		printf("fact incorrect\n");
-
-	//printf("output: %s\n", output_buffer.c_str());
+	printf("fact correct\n");
 }
+
+
